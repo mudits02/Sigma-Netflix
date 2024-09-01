@@ -25,3 +25,8 @@ firebase init
 ```
 firebase deploy
 ```
+
+## General Logic changes
+
+1. We have put the **useEffect()** inside the **header** because we want to navigate after the user is authenticated and for that we needed to use **navigate** just after we authenticate and that was possible only inside the useEffect() but for that needs to be under under routes , so we did under the **header** coz its a route declared in the body component.<br><br>
+2. 
