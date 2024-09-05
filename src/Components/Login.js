@@ -3,7 +3,6 @@ import { checkValidData } from "../Utils/Validate";
 import Header from "./Header";
 import { useState, useRef } from "react";
 import { auth } from "../Utils/firebase";
-import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword , updateProfile } from "firebase/auth";
 import { addUser } from "../Utils/userSlice";
 import { useDispatch } from "react-redux";
@@ -13,7 +12,6 @@ const Login = () => {
     const [isSignInForm, setSignInForm] = useState(true);
     const [errorMessage, setErrorMessage] = useState(null);
     const [showPassword, setShowPassword] = useState(false);
-    const navigate = useNavigate(); //basically navigates to the endpoint passed as argument
 
     const name = useRef(null);
     const email = useRef(null);

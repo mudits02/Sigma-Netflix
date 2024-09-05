@@ -37,4 +37,6 @@ firebase deploy
 
 6. We will make the fetchMovieData into a custom hook rather than doing it in the **Browse.js** coz we want that only render logic is in the component.<br><br>
 
+7. For passing the **Video_id** of the trailer's youtube link , we have 2 methods , first is to use make **state** variable and set it and pass it directly and second is to store this **video_id** in a redux store and then fetch it wherever required.<br><br>
+
 

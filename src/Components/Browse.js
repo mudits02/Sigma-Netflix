@@ -4,6 +4,8 @@ import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../Utils/firebase";
 import useNowPlayingMovies from "../Hooks/useNowPlayingMovies";
+import MainContainer from "./MainContainer";
+import SecondaryContainer from "./SecondaryContainer";
 
 
 const Browse = () => {
@@ -47,6 +49,8 @@ const Browse = () => {
     return (
         <div className="browse relative">
             <Header />
+            <MainContainer />
+            <SecondaryContainer />
             <div className="absolute top-4 right-8 flex items-center z-10">
                 <img
                     src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png"
