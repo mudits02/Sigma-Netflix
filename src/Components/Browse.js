@@ -3,10 +3,13 @@ import Header from "./Header";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../Utils/firebase";
+import useNowPlayingMovies from "../Hooks/useNowPlayingMovies";
+
 
 const Browse = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
+    useNowPlayingMovies(); //This imports all the movie data(Cusom Hook)
 
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);

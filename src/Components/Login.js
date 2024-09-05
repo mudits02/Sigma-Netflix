@@ -39,7 +39,6 @@ const Login = () => {
             signInWithEmailAndPassword(auth, email.current.value, password.current.value)
                 .then((userCredentials) => {
                     const user = userCredentials.user;
-                    navigate("/browse");
                 })
                 .catch((error) => {
                     const errorCode = error.code;
@@ -62,7 +61,6 @@ const Login = () => {
                                 displayName: displayName,
                             })
                         )
-                        navigate("/browse")
                       }).catch((error) => {
                             setErrorMessage(error.message);
                       });

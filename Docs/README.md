@@ -29,4 +29,12 @@ firebase deploy
 ## General Logic changes
 
 1. We have put the **useEffect()** inside the **header** because we want to navigate after the user is authenticated and for that we needed to use **navigate** just after we authenticate and that was possible only inside the useEffect() but for that needs to be under under routes , so we did under the **header** coz its a route declared in the body component.<br><br>
-2. 
+2. We are laso unsubscribing to the **onAuthStateChanged** callback. <br><br>
+3. We observe that whenever we do an API call , the data is rendered twice , this happens because create-react-app wrapps our ***index.js*** around the **Strict Mode** , this because renders our components twice to check if there is any inconsistency in the render cycle of our components.<br><br>
+4. The thing to be noted is that this twice rendering happens only in development phase and not in the **prod** phase , once the application is in the production phase , it calls it only once or as intended.<br><br>
+
+5. **movieReducer (or any reducer)** : This is a function automatically created by createSlice. It listens for specific actions (like adding now playing movies) and updates the movie part of your state accordingly.
+
+6. We will make the fetchMovieData into a custom hook rather than doing it in the **Browse.js** coz we want that only render logic is in the component.<br><br>
+
+
