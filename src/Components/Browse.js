@@ -7,6 +7,7 @@ import usePopularMovies from "../Hooks/usePopularMovies";
 import useTopRatedMovies from "../Hooks/useTopRatedMovies";
 import useUpcomingMovies from "../Hooks/useUpcomingMovies";
 import useHorrorMovies from "../Hooks/useHorrorMovies";
+import { useSelector } from "react-redux";
 
 const Browse = () => {
     useNowPlayingMovies();  // Custom Hook for fetching data
@@ -15,12 +16,18 @@ const Browse = () => {
     useUpcomingMovies();
     useHorrorMovies();
 
+    const showSearch = useSelector(store => store.gpt.showSearch);
     return (
         <div className="browse relative">
             <Header />
-            <Search />
-            <MainContainer />
-            <SecondaryContainer />
+            {showSearch ? (<Search />)
+            : (
+            <>
+                <MainContainer />
+                <SecondaryContainer />
+            </>  
+            )  
+        }
         </div>
     );
 };

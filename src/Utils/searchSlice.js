@@ -7,7 +7,7 @@ const searchSlice = createSlice({
     },
 
     reducers: {
-        toggleSearchView: (state , action) => {
+        toggleSearchView: (state) => {
             state.showSearch = !state.showSearch;
         }
     }

@@ -1,35 +1,33 @@
 import { useState, useEffect, useRef } from "react";
 import { signOut } from "firebase/auth";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { auth } from "../Utils/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { addUser, removeUser } from "../Utils/userSlice";
-import { LOGO_URL } from "../Utils/Constants";
-import { useDispatch } from "react-redux";
+import { LOGO_URL , SUPPORTED_LANGUAGES} from "../Utils/Constants";
+import { useDispatch, useSelector } from "react-redux";
 import { toggleSearchView } from "../Utils/searchSlice";
+import { changeLanguage } from "../Utils/configSlice";
 
 const Header = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
+    const showSearch = useSelector((store) => store.gpt.showSearch)
 
     useEffect(() => {
-        onAuthStateChanged(auth , (user) => {
-            if(user){
-                const {uid , email, displayName} = user;
-                dispatch(addUser({uid: uid , email: email , displayName: displayName}));
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const { uid, email, displayName } = user;
+                dispatch(addUser({ uid, email, displayName }));
                 navigate("/browse");
-            }
-
-            
-            else{
+            } else {
                 dispatch(removeUser());
                 navigate("/");
             }
-        })
-    }, []);
+        });
+    }, [dispatch, navigate]);
 
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);
@@ -40,7 +38,7 @@ const Header = () => {
             .then(() => {
                 navigate("/");
             })
-            .catch((error) => {
+            .catch(() => {
                 navigate("/error");
             });
     };
@@ -53,7 +51,7 @@ const Header = () => {
 
     const handleSearchButton = () => {
         dispatch(toggleSearchView());
-    }
+    };
 
     useEffect(() => {
         if (dropdownOpen) {
@@ -67,6 +65,10 @@ const Header = () => {
         };
     }, [dropdownOpen]);
 
+    const handleLanguageChange = (e) => {
+        dispatch(changeLanguage(e.target.value));
+    }
+
     return (
         <div className="flex items-center justify-between absolute top-0 left-0 w-full px-8 py-4 bg-gradient-to-b from-black to-transparent z-10">
             {/* Netflix Logo */}
@@ -74,10 +76,22 @@ const Header = () => {
 
             {/* Movie Search Button */}
             <button className="ml-auto py-2 px-4 m-2 bg-purple-800 text-white"
-            onClick={handleSearchButton()}
+                onClick={handleSearchButton}
             >
-                Movie Search
+                {showSearch ?  "Home Page": "Search Movie"}
             </button>
+
+            {/* Language Select Dropdown */}
+            {
+                showSearch && (
+            <select
+                onChange={handleLanguageChange}
+                className="ml-4 bg-gray-900 text-white py-2 px-4 rounded-md border border-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+            >
+                {SUPPORTED_LANGUAGES.map((lang) => <option key={lang.identifier} value={lang.identifier}>{lang.name}</option>)}
+            </select>
+                )
+            }
 
             {/* Avatar and Dropdown */}
             <div className="relative flex items-center ml-4">
