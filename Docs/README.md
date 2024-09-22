@@ -39,4 +39,34 @@ firebase deploy
 
 7. For passing the **Video_id** of the trailer's youtube link , we have 2 methods , first is to use make **state** variable and set it and pass it directly and second is to store this **video_id** in a redux store and then fetch it wherever required.<br><br>
 
+## OpenAI API 
+
+1. So if we dont use **dangerouslyAllowBrowser: true** in the ***openAI.js*** in our file , then it will thrown an **runtime error (mentioned below)** , this happens because we are trying to make the **API call** from the client side , which exposes the **API_KEY**nof our personal account to the hackers as while doing a client side call , the JS file is uploaded and it makes the **API_KEY** vulnerable and if its with unauthorized person , we will get a huge bill in the billing cycle.
+
+```
+ERROR
+It looks like you're running in a browser-like environment.
+
+This is disabled by default, as it risks exposing your secret API credentials to attackers.
+If you understand the risks and have appropriate mitigations in place,
+you can set the `dangerouslyAllowBrowser` option to `true`, e.g.,
+
+new OpenAI({ apiKey, dangerouslyAllowBrowser: true });
+
+https://help.openai.com/en/articles/5112595-best-practices-for-api-key-safety
+
+Error: It looks like you're running in a browser-like environment.
+
+This is disabled by default, as it risks exposing your secret API credentials to attackers.
+If you understand the risks and have appropriate mitigations in place,
+you can set the `dangerouslyAllowBrowser` option to `true`, e.g.,
+
+new OpenAI({ apiKey, dangerouslyAllowBrowser: true });
+```
+
+2. Ideally the API call should be done from the Server-Side and not the client side.<br><br>
+
+
+
+
 
