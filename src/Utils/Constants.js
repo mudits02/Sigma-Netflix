@@ -12,8 +12,8 @@ export const API_OPTIONS = {
 
 export const IMG_CDN_URL = "https://image.tmdb.org/t/p/w500";
 
-export const API_KEY = "6fe9e3c412e09304507799b513f7cc74";
+export const API_KEY = process.env.REACT_APP_API_KEY
 
 export const SUPPORTED_LANGUAGES = [{identifier: "en" , name: "English"} , {identifier: "german" , name: "German"} , {identifier: "hindi" , name: "Hindi"}]
 
-export const OPENAI_KEY = "sk-PTDig71c6HR9aF0FSNj5_hTtCDig79fgaSqZMJNENkT3BlbkFJhZyWv_14_0s3r_vxRGn1N_3OYCXk58riWuO3ebNH0A";
+export const OPENAI_KEY = process.env.REACT_APP_OPENAI_KEY

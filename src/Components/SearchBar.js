@@ -1,19 +1,34 @@
-import { useSelector } from "react-redux";
-import { BG_URL } from "../Utils/Constants";
+import "./searchBar.css";
+import { useDispatch, useSelector } from "react-redux";
+import { API_OPTIONS, BG_URL } from "../Utils/Constants";
 import lang from "../Utils/langConstants";
 import { useRef } from "react";
 import openai from "../Utils/openAI";
+import { addGptMovieResult } from "../Utils/searchSlice";
 
 const SearchBar = () => {
     const searchText = useRef(null);
     const langKey = useSelector((store) => store.config.lang); 
+    const dispatch = useDispatch();
+
+    // search movie in TMDB
+    const searchMovieTMDB = async (movie) => {
+        const data = await fetch(
+            "https://api.themoviedb.org/3/search/movie?query=" +
+            movie +
+            "&include_adult=false&language=en-US&page=1",
+            API_OPTIONS
+        );
+        const json = await data.json();
+
+        return json.results;
+    };
 
     const handleGptSearchClick = async () => {
-        // Ensure that the input value is available only when this function is called
         const query = searchText.current?.value || "";
 
-        // Create the GPT query using the search text
-        const gptQuery = "Act as a movie recommendation system and suggest some movies for the query: " 
+        const gptQuery = 
+            "Act as a movie recommendation system and suggest some movies for the query: " 
             + query + 
             ". Only give the names of 5 movies, nothing else, comma separated like the example given ahead. Example Result: Gadar, Sholay, Don, Maine Pyaar Kiya, Koi mil gaya";
 
@@ -25,13 +40,26 @@ const SearchBar = () => {
             model: 'gpt-3.5-turbo',
         });
 
-        console.log(gptResults.choices);
+        const gptMovies = gptResults.choices?.[0]?.message?.content.split(", ");
+        console.log(gptMovies);
+
+        // Search for each Movie in the TMDB API
+        const promiseArray = gptMovies.map((movie) => searchMovieTMDB(movie));
+        const tmdbResults = await Promise.all(promiseArray);
+
+        console.log(tmdbResults);
+        dispatch(addGptMovieResult({movieName: gptMovies , movieResults: tmdbResults}));
     }
 
     return (
         <div 
-            className="flex items-center justify-center h-screen bg-cover bg-center" 
-            style={{ backgroundImage: `url(${BG_URL})` }}
+            className="flex items-center justify-center min-h-screen bg-cover bg-center" 
+            style={{ 
+                backgroundImage: `url(${BG_URL})`,
+                backgroundSize: 'cover',  // Ensures the background covers the entire viewport
+                backgroundRepeat: 'no-repeat', // Prevents background repetition
+                backgroundPosition: 'center', // Centers the background
+            }}
         >
             <form 
                 className="w-1/2 bg-black bg-opacity-80 rounded-full shadow-lg p-6 grid grid-cols-12 gap-4"
