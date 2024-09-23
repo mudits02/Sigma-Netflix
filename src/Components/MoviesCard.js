@@ -1,8 +1,7 @@
-import { useSelector } from "react-redux";
 import { IMG_CDN_URL } from "../Utils/Constants";
 
 const MoviesCard = ({poster_path}) => {
-
+    if(!poster_path) return null;
     //console.log(movies);
 
     return(

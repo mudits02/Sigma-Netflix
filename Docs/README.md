@@ -67,6 +67,10 @@ new OpenAI({ apiKey, dangerouslyAllowBrowser: true });
 2. Ideally the API call should be done from the Server-Side and not the client side.<br><br>
 
 
+## Memoization
+
+1. So basically , same concept as DP that we are saving some results so that they can be used further in the algorithm , here it is used that if we already have data in our redux store , still when going back to the home page , we see that API call is taking place , so to avoid that ,  we put a condition after getting data from the store that wif the data inside the redux store is not null ,then we will not render the API , logic written inside the **useEffect** of the API calling hooks<br><br>
+
 
 
 
