@@ -3,12 +3,11 @@ import { checkValidData } from "../Utils/Validate";
 import Header from "./Header";
 import { useState, useRef } from "react";
 import { auth } from "../Utils/firebase";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword , updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { addUser } from "../Utils/userSlice";
 import { useDispatch } from "react-redux";
 
 const Login = () => {
-
     const [isSignInForm, setSignInForm] = useState(true);
     const [errorMessage, setErrorMessage] = useState(null);
     const [showPassword, setShowPassword] = useState(false);
@@ -33,7 +32,6 @@ const Login = () => {
         if (message) return;
 
         if (isSignInForm) {
-            // Sign in logic
             signInWithEmailAndPassword(auth, email.current.value, password.current.value)
                 .then((userCredentials) => {
                     const user = userCredentials.user;
@@ -44,24 +42,23 @@ const Login = () => {
                     setErrorMessage(errorCode + " - " + errorMessage);
                 });
         } else {
-            // Sign Up logic
             createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
                 .then((userCredentials) => {
                     const user = userCredentials.user;
                     updateProfile(auth.currentUser, {
                         displayName: name.current.value,
-                      }).then(() => {
-                        const {uid , email , displayName} = auth.currentUser;
+                    }).then(() => {
+                        const { uid, email, displayName } = auth.currentUser;
                         dispatch(
                             addUser({
                                 uid: uid,
                                 email: email,
                                 displayName: displayName,
                             })
-                        )
-                      }).catch((error) => {
-                            setErrorMessage(error.message);
-                      });
+                        );
+                    }).catch((error) => {
+                        setErrorMessage(error.message);
+                    });
                 })
                 .catch((error) => {
                     const errorCode = error.code;
@@ -82,20 +79,20 @@ const Login = () => {
                 />
             </div>
 
-            <form onSubmit={(e) => e.preventDefault()} className="relative z-20 bg-black bg-opacity-75 p-12 rounded-md max-w-md w-full text-white">
-                <h1 className="text-4xl mb-8">{isSignInForm ? "Sign In" : "Sign Up"}</h1>
+            <form onSubmit={(e) => e.preventDefault()} className="relative z-20 bg-black bg-opacity-75 p-8 md:p-12 rounded-md max-w-sm sm:max-w-md w-full text-white mx-4">
+                <h1 className="text-3xl sm:text-4xl mb-6 sm:mb-8">{isSignInForm ? "Sign In" : "Sign Up"}</h1>
                 <input
                     ref={email}
                     type="text"
                     placeholder="Email"
-                    className="w-full p-4 my-4 bg-gray-800 rounded text-lg"
+                    className="w-full p-3 sm:p-4 my-3 sm:my-4 bg-gray-800 rounded text-lg"
                 />
                 <div className="relative w-full">
                     <input
                         ref={password}
                         type={showPassword ? "text" : "password"}
                         placeholder="Password"
-                        className="w-full p-4 my-4 bg-gray-800 rounded text-lg"
+                        className="w-full p-3 sm:p-4 my-3 sm:my-4 bg-gray-800 rounded text-lg"
                     />
                     <span
                         className="absolute right-4 top-4 text-gray-500 cursor-pointer"
@@ -110,15 +107,15 @@ const Login = () => {
                         ref={name}
                         type="text"
                         placeholder="Name"
-                        className="w-full p-4 my-4 bg-gray-800 rounded text-lg"
+                        className="w-full p-3 sm:p-4 my-3 sm:my-4 bg-gray-800 rounded text-lg"
                     />
                 )}
                 <button
                     onClick={handleButtonClick}
-                    className="w-full p-4 mt-4 bg-red-600 rounded text-lg hover:bg-red-700 transition-colors duration-300">
+                    className="w-full p-3 sm:p-4 mt-4 bg-red-600 rounded text-lg hover:bg-red-700 transition-colors duration-300">
                     {isSignInForm ? "Sign In" : "Sign Up"}
                 </button>
-                <p className="py-10 font-bold cursor-pointer" onClick={toggleSignInForm}>
+                <p className="py-6 sm:py-10 font-bold cursor-pointer text-center" onClick={toggleSignInForm}>
                     {isSignInForm ? "New to Netflix? Sign Up Now" : "Already a Member? Sign In Now"}
                 </p>
             </form>
